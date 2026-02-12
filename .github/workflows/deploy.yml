@@ -28,8 +28,11 @@ jobs:
       run: docker push ${{ secrets.DOCKER_USERNAME }}/sample-app:v1
 
 
-    - name: Set kubectl
-      uses: azure/setup-kubectl@v4
+    - name: Setup kubeconfig
+      run : |
+        echo "${{ secrets.KUBE_CONFIG_DATA }}" | base64 -d > kubeconfig
+        mkdir -p $HOME/.kube
+        mv kubeconfig $HOME/.kube/config
 
 
     - name: Deploy to cluster
